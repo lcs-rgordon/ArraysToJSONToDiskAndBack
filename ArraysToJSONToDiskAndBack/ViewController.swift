@@ -69,7 +69,27 @@ class ViewController: UIViewController, UITextFieldDelegate {
         // Now decode the JSON into an array
         let peopleReadFromDisk = try! JSONDecoder().decode([Person].self, from: readJSONData)
         print("Number of people read from disk are: \(peopleReadFromDisk.count)")
-
+        
+        // Finally, load the names from the array into the textfields
+        switch peopleReadFromDisk.count {
+        case 0:
+            break
+        case 3:
+            textFieldFirstName3.text = peopleReadFromDisk[2].firstName
+            textFieldLastName3.text = peopleReadFromDisk[2].lastName
+            fallthrough
+        case 2:
+            textFieldFirstName2.text = peopleReadFromDisk[1].firstName
+            textFieldLastName2.text = peopleReadFromDisk[1].lastName
+            fallthrough
+        case 1:
+            textFieldFirstName1.text = peopleReadFromDisk[0].firstName
+            textFieldLastName1.text = peopleReadFromDisk[0].lastName
+            fallthrough
+        default:
+            break
+        }
+        
     }
     
     @IBAction func saveNames(_ sender: Any) {
