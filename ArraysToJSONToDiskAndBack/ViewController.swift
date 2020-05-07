@@ -17,6 +17,8 @@ class ViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var textFieldFirstName3: UITextField!
     @IBOutlet weak var textFieldLastName3: UITextField!
     
+    // The empty array of names to store
+    var people: [Person] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,6 +48,32 @@ class ViewController: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func saveNames(_ sender: Any) {
+        
+        // Write to the array of persons
+        
+        // First person
+        if let first = textFieldFirstName1.text, let last = textFieldLastName1.text {
+            people.append( Person(firstName: first, lastName: last) )
+        }
+
+        // Second person
+        if let first = textFieldFirstName2.text, let last = textFieldLastName2.text {
+            people.append( Person(firstName: first, lastName: last) )
+        }
+
+        // third person
+        if let first = textFieldFirstName3.text, let last = textFieldLastName3.text {
+            people.append( Person(firstName: first, lastName: last) )
+        }
+        
+        // Try to encode the information in JSON
+        if let encodedData = try? JSONEncoder().encode(people) {
+            
+            // If the data was encoded successfully, write it to the debug console
+            let stringJSON = String(data: encodedData, encoding: .utf8)!
+            print(stringJSON)
+        }
+
         
     }
     
