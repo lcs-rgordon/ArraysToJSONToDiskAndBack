@@ -20,6 +20,9 @@ class ViewController: UIViewController, UITextFieldDelegate {
     // The empty array of names to store
     var people: [Person] = []
     
+    // The name of the file where data will be saved
+    let dataStorageFileName = "names.json"
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -43,7 +46,22 @@ class ViewController: UIViewController, UITextFieldDelegate {
         // Watch for when the keyboard is shown or hidden
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
-
+        
+        // Get a handle to the documents directory in the app bundle
+        let documentsDirectoryURL = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+        
+        // Get the URL for the file
+        let fileURL = documentsDirectoryURL.appendingPathComponent(dataStorageFileName)
+        print("FilePath: \(fileURL.path)")
+           
+        var readJSONString = "" // Used to store the contents of the file read from disk
+        do {
+           // Read the file contents
+           readJSONString = try String(contentsOf: fileURL)
+        } catch let error as NSError {
+           print("Failed reading from URL: \(fileURL), Error: " + error.localizedDescription)
+        }
+        print("Contents of text file: \(readJSONString)")
 
     }
     
@@ -74,7 +92,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
             print(stringJSON)
             
             // Now obtain a reference to the app bundle where this data can be saved
-            let filename = getDocumentsDirectory().appendingPathComponent("names.json")
+            let filename = getDocumentsDirectory().appendingPathComponent(dataStorageFileName)
 
             do {
                 try stringJSON.write(to: filename, atomically: true, encoding: String.Encoding.utf8)
