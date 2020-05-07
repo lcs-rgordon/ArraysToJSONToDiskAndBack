@@ -72,6 +72,16 @@ class ViewController: UIViewController, UITextFieldDelegate {
             // If the data was encoded successfully, write it to the debug console
             let stringJSON = String(data: encodedData, encoding: .utf8)!
             print(stringJSON)
+            
+            // Now obtain a reference to the app bundle where this data can be saved
+            let filename = getDocumentsDirectory().appendingPathComponent("names.json")
+
+            do {
+                try stringJSON.write(to: filename, atomically: true, encoding: String.Encoding.utf8)
+            } catch {
+                print("Failed to write JSON data: \(error.localizedDescription)")
+            }
+            
         }
 
         
@@ -99,6 +109,11 @@ class ViewController: UIViewController, UITextFieldDelegate {
         if self.view.frame.origin.y != 0 {
             self.view.frame.origin.y = 0
         }
+    }
+    
+    func getDocumentsDirectory() -> URL {
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        return paths[0]
     }
     
 }
