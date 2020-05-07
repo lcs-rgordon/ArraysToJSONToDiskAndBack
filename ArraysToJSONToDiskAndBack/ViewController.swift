@@ -62,6 +62,13 @@ class ViewController: UIViewController, UITextFieldDelegate {
            print("Failed reading from URL: \(fileURL), Error: " + error.localizedDescription)
         }
         print("Contents of text file: \(readJSONString)")
+        
+        // Change the JSON string into equivalent information encoded as UTF8 data
+        let readJSONData = readJSONString.data(using: .utf8)!
+
+        // Now decode the JSON into an array
+        let peopleReadFromDisk = try! JSONDecoder().decode([Person].self, from: readJSONData)
+        print("Number of people read from disk are: \(peopleReadFromDisk.count)")
 
     }
     
