@@ -21,6 +21,14 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        
+        // Change return key type to "done" for each text field
+        textFieldFirstName1.returnKeyType = .done
+        textFieldFirstName2.returnKeyType = .done
+        textFieldFirstName3.returnKeyType = .done
+        textFieldLastName1.returnKeyType = .done
+        textFieldLastName2.returnKeyType = .done
+        textFieldLastName3.returnKeyType = .done
     }
     
     @IBAction func saveNames(_ sender: Any) {
