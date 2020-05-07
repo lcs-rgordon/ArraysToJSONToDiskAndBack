@@ -37,6 +37,11 @@ class ViewController: UIViewController, UITextFieldDelegate {
         textFieldLastName1.delegate = self
         textFieldLastName2.delegate = self
         textFieldLastName3.delegate = self
+        
+        // Watch for when the keyboard is shown or hidden
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+
 
     }
     
@@ -47,6 +52,25 @@ class ViewController: UIViewController, UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
+    }
+    
+    
+    // Move the view up if the keyboard obscures the text field
+    @objc func keyboardWillShow(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            if self.view.frame.origin.y == 0 {
+                // Only move view up if it's the last two fields the user has tapped into
+                if textFieldFirstName3.isFirstResponder || textFieldLastName3.isFirstResponder {
+                    self.view.frame.origin.y -= keyboardSize.height
+                }
+            }
+        }
+    }
+
+    @objc func keyboardWillHide(notification: NSNotification) {
+        if self.view.frame.origin.y != 0 {
+            self.view.frame.origin.y = 0
+        }
     }
     
 }
