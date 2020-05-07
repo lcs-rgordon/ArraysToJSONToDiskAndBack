@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var textFieldFirstName1: UITextField!
     @IBOutlet weak var textFieldLastName1: UITextField!
@@ -29,10 +29,24 @@ class ViewController: UIViewController {
         textFieldLastName1.returnKeyType = .done
         textFieldLastName2.returnKeyType = .done
         textFieldLastName3.returnKeyType = .done
+        
+        // Make the delegate for all text fields be this view (the screen, or view, we are currently preparing to show)
+        textFieldFirstName1.delegate = self
+        textFieldFirstName2.delegate = self
+        textFieldFirstName3.delegate = self
+        textFieldLastName1.delegate = self
+        textFieldLastName2.delegate = self
+        textFieldLastName3.delegate = self
+
     }
     
     @IBAction func saveNames(_ sender: Any) {
         
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
     
 }
